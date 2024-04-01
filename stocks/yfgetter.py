@@ -53,6 +53,22 @@ async def get_price_range(ticker, start, end):
     return data["Close"]
 
 
+async def get_volume_realtime(ticker):
+    stock = yf.Ticker(ticker)
+
+    data = stock.history(period="1d", interval="1m")
+
+    return data["Volume"]
+
+
+async def get_volume_range(ticker, start, end):
+    stock = yf.Ticker(ticker)
+
+    data = stock.history(start=start, end=end)
+
+    return data["Volume"]
+
+
 async def find_ticker_by_name(company_name):
 
     try:
