@@ -69,6 +69,24 @@ async def get_volume_range(ticker, start, end):
     return data["Volume"]
 
 
+async def find_ticker_by_comname(comname):
+    # Load the CSV file
+    file_path = 'stocks/TRADE_TICKER_COMNAME_ALL.csv'
+    data = pd.read_csv(file_path)
+
+    # Search for the company name in the COMNAME column
+    match = data[data['COMNAME'].str.contains(comname, case=False, na=False)]
+
+    # If there's at least one match, return the first one's ticker
+    if not match.empty:
+        result = [{"TICKER": row['TICKER'], "COMNAME": row['COMNAME']} for index, row in match.iterrows()]
+
+        return result
+    else:
+        return "Ticker not found for the given company name."
+
+
+# 리눅스에서 동작 안해서 미사용
 async def find_ticker_by_name(company_name):
 
     try:
@@ -105,3 +123,4 @@ async def find_ticker_by_name(company_name):
     except AttributeError:
         # 검색 결과가 없거나 구조가 예상과 다를 때
         return "Ticker not found or search page structure has changed."
+

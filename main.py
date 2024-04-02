@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from stocks.yfgetter import (get_info, get_per, get_price_realtime, get_price_range,
-                             find_ticker_by_name, get_volume_realtime, get_volume_range)
+                             find_ticker_by_name, get_volume_realtime, get_volume_range,
+                             find_ticker_by_comname)
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
@@ -50,6 +51,13 @@ async def get_stock_volume_range(ticker: str, start: str, end: str):
     volume = await get_volume_range(ticker, start, end)
 
     return volume.to_dict()
+
+
+@app.get("/find_ticker/", response_class=JSONResponse)
+async def find_ticker(comname: str):
+    ticker = await find_ticker_by_comname(comname)
+
+    return ticker
 
 
 '''
