@@ -1,9 +1,8 @@
 import yfinance as yf
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from googletrans import Translator, LANGUAGES
 
 async def get_per(ticker):
     stock = yf.Ticker(ticker)
@@ -74,8 +73,24 @@ async def find_ticker_by_comname(comname):
     file_path = 'stocks/TRADE_TICKER_COMNAME_ALL.csv'
     data = pd.read_csv(file_path)
 
+    # Translator 객체 생성
+    translator = Translator()
+
+    # 입력 텍스트의 언어 감지
+    detected_language = translator.detect(comname).lang
+
+    # 대상 언어 설정: 영어면 한국어로, 한국어면 영어로 번역
+    if detected_language == 'ko':
+        dest_language = 'en'
+    else:
+        # 감지된 언어가 영어나 한국어가 아닌 경우, 기본적으로 영어로 설정
+        dest_language = 'en'
+
+    # 번역 실행
+    translation_comname = translator.translate(comname, dest=dest_language)
+
     # Search for the company name in the COMNAME column
-    match = data[data['COMNAME'].str.contains(comname, case=False, na=False)]
+    match = data[data['COMNAME'].str.contains(translation_comname.text, case=False, na=False)]
 
     # If there's at least one match, return the first one's ticker
     if not match.empty:
