@@ -41,7 +41,7 @@ async def get_price_realtime(ticker):
 
     data = stock.history(period="1d", interval="1m")
 
-    return data["Close"]
+    return data[['Open', 'Low', 'High', 'Close']]
 
 
 async def get_price_range(ticker, start, end):
@@ -49,7 +49,7 @@ async def get_price_range(ticker, start, end):
 
     data = stock.history(start=start, end=end)
 
-    return data["Close"]
+    return data[['Open', 'Low', 'High', 'Close']]
 
 
 async def get_volume_realtime(ticker):
