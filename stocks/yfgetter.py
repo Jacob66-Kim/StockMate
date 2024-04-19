@@ -42,8 +42,8 @@ async def get_price_realtime(ticker):
     data = stock.history(period="1d", interval="1m")
 
     ohlcv_list = [
-        {"Date": date, "Open": row['Open'], "Low": row['Low'], "High": row['High'],
-         "Close": row['Close'], "Volume": row['Volume']}
+        {"date": date, "open": row['Open'], "low": row['Low'], "high": row['High'],
+         "close": row['Close'], "volume": row['Volume']}
         for date, row in data.iterrows()
     ]
 
@@ -56,8 +56,8 @@ async def get_price_range(ticker, start, end):
     data = stock.history(start=start, end=end)
 
     ohlcv_list = [
-        {"Date": date, "Open": row['Open'], "Low": row['Low'], "High": row['High'],
-         "Close": row['Close'], "Volume": row['Volume']}
+        {"date": date, "open": row['Open'], "low": row['Low'], "high": row['High'],
+         "close": row['Close'], "volume": row['Volume']}
         for date, row in data.iterrows()
     ]
 
